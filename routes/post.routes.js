@@ -1,0 +1,15 @@
+const express=require('express');
+const router=express.Router();
+const postController=require('../controllers/post.controller');
+const { protect} = require('../middleware/auth.middleware');
+//const upload = require('../middleware/upload.middleware');
+const {upload,uploadOnImageKit}=require('../middleware/upload.middleware');
+const { validatePost } = require('../validators/post.validator');
+const{createPost,getAllPosts,getPost,updatePost,deletePost}=postController;
+router.use(protect);
+router.get('/',getAllPosts);
+router.get('/:id',getPost);
+router.post('/', validatePost, upload.array('images', 5), uploadOnImageKit, createPost);
+router.patch('/:id',updatePost);
+router.delete('/:id',deletePost);
+module.exports=router;

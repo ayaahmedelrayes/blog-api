@@ -1,0 +1,11 @@
+const exprees=require('express');
+const router=exprees.Router();
+const {getAllUsers,getUser,updateUser,deleteUser}=require('../controllers/user.controller');
+const {protect,restrictTo}=require('../middleware/auth.middleware');
+const { validateUser } = require('../validators/user.validator');
+router.use(protect);
+router.get('/',restrictTo('admin','superadmin'),getAllUsers);
+router.get('/:id',getUser);
+router.patch('/:id', validateUser, updateUser);
+router.delete('/:id', restrictTo('admin','superadmin'),deleteUser);
+module.exports=router;
